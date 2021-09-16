@@ -18,8 +18,15 @@ import java.util.stream.Collectors;
  */
 public class SimpleWebsocket {
     static class SymData {
-        String actionsReceived = "";
-        double volReceived = Double.NaN;
+        String action;
+        double vol;
+        double close;
+
+        public SymData(String action, double vol, double close) {
+            this.action = action;
+            this.vol = vol;
+            this.close = close;
+        }
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -29,7 +36,7 @@ public class SimpleWebsocket {
 
         Gson gson = new GsonBuilder().create();
 
-        Map<String, Map<Long, SymData>> syms = new TreeMap<String, Map<Long, SymData>>();
+        Map<String, Map<Long, List<SymData>>> syms = new TreeMap<String, Map<Long, List<SymData>>>();
 
         long startCollecting = Instant.now().plusSeconds(15).toEpochMilli() / 1000;
 
@@ -50,22 +57,23 @@ public class SimpleWebsocket {
                         String sym = js.get("FROMSYMBOL").getAsString();
 
                         if (!syms.containsKey(sym)) {
-                            syms.put(sym, new TreeMap<Long, SymData>());
+                            syms.put(sym, new TreeMap<Long, List<SymData>>());
                         }
 
-                        Map<Long, SymData> hm = syms.get(sym);
+                        Map<Long, List<SymData>> hm = syms.get(sym);
 
                         long ts = js.get("TS").getAsLong();
 
                         if (startCollecting < ts) {
                             if (!hm.containsKey(ts)) {
-                                hm.put(ts, new SymData());
+                                hm.put(ts, new ArrayList<SymData>());
                             }
 
-                            SymData symdata = hm.get(ts);
-
-                            symdata.actionsReceived += js.get("ACTION").getAsString();
-                            symdata.volReceived = js.get("VOLUMETO").getAsDouble();
+                            hm.get(ts).add(new SymData(
+                                    js.get("ACTION").getAsString(),
+                                    js.get("VOLUMETO").getAsDouble(),
+                                    js.get("CLOSE").getAsDouble()
+                            ));
                         }
                     }
                 }
@@ -96,11 +104,13 @@ public class SimpleWebsocket {
             System.out.println("======== START DUMP ===========");
             syms.entrySet().stream().forEach(e -> {
                 String sym = e.getKey();
-                Map<Long, SymData> map = e.getValue();
+                Map<Long, List<SymData>> map = e.getValue();
 
+                System.out.println(sym + ":");
                 map.entrySet().stream().forEach( t -> {
                     // if (t.getValue().volReceived == 0) {
-                        System.out.println(sym + "\t: " + t.getKey() + " : " + t.getValue().actionsReceived + " " + t.getValue().volReceived);
+                        System.out.println( "\t" + t.getKey() + " : " +
+                                t.getValue().stream().map(a -> "[" + a.action + " " + a.close + " " + a.vol + "]").collect(Collectors.joining(" ")));
                     // }
                 });
             });
