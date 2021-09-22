@@ -21,11 +21,13 @@ public class SimpleWebsocket {
         String action;
         double vol;
         double close;
+        long time;
 
         public SymData(String action, double vol, double close) {
             this.action = action;
             this.vol = vol;
             this.close = close;
+            this.time = System.currentTimeMillis();
         }
     }
 
@@ -109,8 +111,9 @@ public class SimpleWebsocket {
                 System.out.println(sym + ":");
                 map.entrySet().stream().forEach( t -> {
                     // if (t.getValue().volReceived == 0) {
+                    long start = (t.getValue().size() > 0) ? t.getValue().get(0).time : 0;
                     System.out.println( "\t" + t.getKey() + " : " +
-                            t.getValue().stream().map(a -> "[" + a.action + " " + a.close + " " + a.vol + "]").collect(Collectors.joining(" ")));
+                            t.getValue().stream().map(a -> "[" + a.action + " (" + (a.time - start)/1000.0 + ") " + a.close + " " + a.vol + "]").collect(Collectors.joining(" ")));
                     // }
                 });
             });
