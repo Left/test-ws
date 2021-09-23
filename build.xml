@@ -1,0 +1,16 @@
+<project>
+
+    <target name="clean">
+        <delete dir="out"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="out/production/test-ws/"/>
+        <javac srcdir="src" classpath="lib/gson-2.8.8.jar" destdir="out/production/test-ws/"/>
+    </target>
+
+    <target name="run">
+        <java classpath="out/production/test-ws/;lib/*" classname="com.equeum.SimpleWebsocket" fork="true"/>
+    </target>
+
+</project>

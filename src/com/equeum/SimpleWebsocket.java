@@ -90,12 +90,9 @@ public class SimpleWebsocket {
         }).join();
 
         String[] tickers = new String[]{
-                "1INCH", "AAVE", "ACH", "ADA", "ALGO", "AMP", "ANKR", "ATOM", "AXS", "BAL", "BAND", "BAT", "BCH", "BNT", "BOND", "BTC", "CELO", "CGLD",
-                "CHZ", "CLV", "COMP", "COTI", "CRV", "CTSI", "DAI", "DASH", "DDX", "DOGE", "DOT", "ENJ", "EOS", "ETC", "ETH", "FARM", "FET", "FIL",
-                "FORTH", "GRAPH", "GRT", "GTC", "ICP", "IOTX", "KEEP", "KNC", "LINK", "LPT", "LRC", "LTC", "MANA", "MASK", "MATIC", "MIR", "MKR",
-                "MLN", "NKN", "NMR", "NU", "OGN", "OMG", "ORN", "OXT", "PAX", "PLAYD", "POLY", "QNT", "QUICK", "RAD", "RAI", "REN", "REP", "REQ",
-                "RGT", "RLC", "RLY", "SHIB", "SKL", "SNX", "SOL", "STORJ", "SUSHI", "TRB", "TRIBE", "TRU", "UMA", "UNI", "USDT", "UST", "WBTC",
-                "WLUNA", "XLM", "XRP", "XTZ", "XYO", "YFI", "YFII", "ZEC", "ZRX",
+                "OGN", "RLC", "USDP", "POLY",
+                "FET", "ICP", "AVAX", "BSV",
+                "BTT", "CHZ", "KSM"
         };
 
         String tickersList = Arrays.stream(tickers).map(t -> "\"24~CCCAGG~" + t + "~USD~m\"").collect(Collectors.joining(", "));
