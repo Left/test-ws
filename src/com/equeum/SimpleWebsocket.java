@@ -34,7 +34,11 @@ public class SimpleWebsocket {
     public static void main(String[] args) throws InterruptedException {
 
         final HttpClient httpClient = HttpClient.newHttpClient();
-        final String url = "wss://streamer.cryptocompare.com/v2?api_key=" + "437a8eeb9e2dac438219fd9606a8493716d67a40f08f1656c26f0b0aa0e4b13a";
+        final String apiKey = System.getenv("API_KEY");
+        if (apiKey == null) {
+            System.out.println("Set API_KEY env var");
+        }
+        final String url = "wss://streamer.cryptocompare.com/v2?api_key=" + apiKey;
 
         Gson gson = new GsonBuilder().create();
 
@@ -116,7 +120,7 @@ public class SimpleWebsocket {
             });
             System.out.println("======== END DUMP ===========");
 
-            Thread.sleep(20000);
+            Thread.sleep(60000);
         }
     }
 }

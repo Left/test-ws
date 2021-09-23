@@ -2,4 +2,5 @@ How to run:
 
 1. Install Java and ANT
 2. `ant build`
-3. `ant run`
+3. Set API_KEY env var to your API KEY
+4. `ant run`
